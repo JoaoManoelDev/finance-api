@@ -4,7 +4,7 @@ export class UniqueEntityID {
   private value: string
 
   toValue() {
-    return this,this.value
+    return this, this.value
   }
 
   toString() {
