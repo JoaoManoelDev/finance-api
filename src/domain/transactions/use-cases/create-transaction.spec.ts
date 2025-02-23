@@ -18,7 +18,8 @@ describe('Create Transaction Use Case', () => {
       paymentMethod: 'pix',
       recurring: false,
       type: 'income',
-      title: 'Pizza'
+      status: 'completed',
+      title: 'Pizza',
     })
 
     expect(result.isRight()).toBe(true)
@@ -29,6 +30,7 @@ describe('Create Transaction Use Case', () => {
     expect(inMemoryTransactionsRepository.transactions[0].paymentMethod).toBe('pix')
     expect(inMemoryTransactionsRepository.transactions[0].recurring).toBe(false)
     expect(inMemoryTransactionsRepository.transactions[0].type).toBe('income')
+    expect(inMemoryTransactionsRepository.transactions[0].status).toBe('completed')
     expect(inMemoryTransactionsRepository.transactions[0].title).toBe('Pizza')
   })
 })

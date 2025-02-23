@@ -2,15 +2,19 @@ import { Entity } from "@/core/entities/entity"
 import { UniqueEntityID } from "@/core/entities/unique-entity-id"
 import { Optional } from "@/core/types/optional"
 
+export type TransactionStatus = "completed" | "canceled" | "failed" | "refunded"
+export type TransactionType = "income" | "outcome"
+
 export interface TransactionProps {
   ownerId: UniqueEntityID
   title: string
   amountInCents: string
-  type: 'income' | 'outcome'
-  createdAt: Date
+  type: TransactionType
+  status: TransactionStatus
   description?: string
   paymentMethod: string
   recurring: boolean
+  createdAt: Date
 }
 
 export class Transaction extends Entity<TransactionProps> {
@@ -36,6 +40,10 @@ export class Transaction extends Entity<TransactionProps> {
 
   get title() {
     return this.props.title
+  }
+
+  get status() {
+    return this.props.status
   }
 
   static create(

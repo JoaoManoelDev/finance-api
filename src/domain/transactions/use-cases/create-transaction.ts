@@ -1,13 +1,14 @@
 import { UniqueEntityID } from "@/core/entities/unique-entity-id"
 import { Either, right } from "@/core/erros/either"
-import { Transaction } from "@/domain/transactions/entities/transaction"
+import { Transaction, TransactionStatus, TransactionType } from "@/domain/transactions/entities/transaction"
 import { transactionsRepository } from "@/domain/transactions/repositories/transactions-repository"
 
 interface CreateTransactionUseCaseRequest {
   ownerId: string
   title: string
   amountInCents: string
-  type: 'income' | 'outcome'
+  type: TransactionType
+  status: TransactionStatus
   description?: string
   paymentMethod: string
   recurring: boolean
@@ -30,6 +31,7 @@ export class CreateTransactionUseCase {
     paymentMethod,
     recurring,
     type,
+    status,
     description,
   }: CreateTransactionUseCaseRequest): Promise<CreateTransactionUseCaseResponse> {
     const transaction = Transaction.create({
@@ -38,6 +40,7 @@ export class CreateTransactionUseCase {
       paymentMethod,
       recurring,
       type,
+      status,
       ownerId: new UniqueEntityID(ownerId),
       description
     })
