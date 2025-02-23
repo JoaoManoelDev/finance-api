@@ -11,6 +11,10 @@ describe('Create Transaction Use Case', () => {
     sut = new CreateTransactionUseCase(inMemoryTransactionsRepository)
   })
 
+  afterEach(() => {
+    inMemoryTransactionsRepository.transactions = []
+  })
+
   it('should be able create a new transaction', async () => {
     const result = await sut.execute({
       ownerId: 'owner-01',

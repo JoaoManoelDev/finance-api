@@ -13,6 +13,7 @@ const VALID_STATUS: Record<TransactionStatus, true> = {
 interface UpdateTransactionStatusRequest {
   transactionId: string
   status: TransactionStatus
+  ownerId: string
 }
 
 type UpdateTransactionStatusResponse = Either<
@@ -22,12 +23,13 @@ type UpdateTransactionStatusResponse = Either<
   }
 > 
 
-export class UpdateTransactionStatus {
+export class UpdateTransactionStatusUseCase {
   constructor(private transactionsRepository: TransactionsRepository){}
 
   async execute({
     status,
-    transactionId
+    transactionId,
+    ownerId
   }: UpdateTransactionStatusRequest): Promise<UpdateTransactionStatusResponse>  {
     if (!(status in VALID_STATUS)) {
       return left(`invalid status: ${status}.`)
@@ -35,8 +37,13 @@ export class UpdateTransactionStatus {
 
     const transaction = await this.transactionsRepository.findById(transactionId)
 
+    
     if (!transaction) {
       return left('transaction not found.')
+    }
+
+    if (transaction.ownerId.toString() !== ownerId) {
+      return left('not allowed.')
     }
 
     if (transaction.status === 'completed' && status === 'pending') {

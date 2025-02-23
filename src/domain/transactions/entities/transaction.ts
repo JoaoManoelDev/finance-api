@@ -47,7 +47,7 @@ export class Transaction extends Entity<TransactionProps> {
   }
 
   set status(status: TransactionStatus) {
-    this.status === status
+    this.props.status = status
   }
 
   static create(
