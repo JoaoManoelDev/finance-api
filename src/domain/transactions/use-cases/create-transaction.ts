@@ -1,7 +1,7 @@
 import { UniqueEntityID } from "@/core/entities/unique-entity-id"
 import { Either, right } from "@/core/erros/either"
 import { Transaction, TransactionStatus, TransactionType } from "@/domain/transactions/entities/transaction"
-import { transactionsRepository } from "@/domain/transactions/repositories/transactions-repository"
+import { TransactionsRepository } from "@/domain/transactions/repositories/transactions-repository"
 
 interface CreateTransactionUseCaseRequest {
   ownerId: string
@@ -22,7 +22,7 @@ type CreateTransactionUseCaseResponse = Either<
 > 
 
 export class CreateTransactionUseCase {
-  constructor(private transactionsRepository: transactionsRepository) {}
+  constructor(private transactionsRepository: TransactionsRepository) {}
 
   async execute({
     ownerId,
@@ -45,7 +45,7 @@ export class CreateTransactionUseCase {
       description
     })
 
-    this.transactionsRepository.create(transaction)
+    await this.transactionsRepository.create(transaction)
 
     return right({
       transaction

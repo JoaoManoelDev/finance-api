@@ -2,7 +2,7 @@ import { Entity } from "@/core/entities/entity"
 import { UniqueEntityID } from "@/core/entities/unique-entity-id"
 import { Optional } from "@/core/types/optional"
 
-export type TransactionStatus = "completed" | "canceled" | "failed" | "refunded"
+export type TransactionStatus = "completed" | "canceled" | "failed" | "refunded" | "pending"
 export type TransactionType = "income" | "outcome"
 
 export interface TransactionProps {
@@ -44,6 +44,10 @@ export class Transaction extends Entity<TransactionProps> {
 
   get status() {
     return this.props.status
+  }
+
+  set status(status: TransactionStatus) {
+    this.status === status
   }
 
   static create(
