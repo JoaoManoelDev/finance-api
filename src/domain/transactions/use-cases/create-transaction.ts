@@ -1,4 +1,5 @@
 import { UniqueEntityID } from "@/core/entities/unique-entity-id"
+import { Either, right } from "@/core/erros/either"
 import { Transaction } from "@/domain/transactions/entities/transaction"
 import { transactionsRepository } from "@/domain/transactions/repositories/transactions-repository"
 
@@ -12,9 +13,12 @@ interface CreateTransactionUseCaseRequest {
   recurring: boolean
 }
 
-interface CreateTransactionUseCaseResponse {
-  transaction: Transaction
-}
+type CreateTransactionUseCaseResponse = Either<
+  null,
+  {
+    transaction: Transaction
+  }
+> 
 
 export class CreateTransactionUseCase {
   constructor(private transactionsRepository: transactionsRepository) {}
@@ -40,6 +44,8 @@ export class CreateTransactionUseCase {
 
     this.transactionsRepository.create(transaction)
 
-    return { transaction }
+    return right({
+      transaction
+    })
   }
 }
